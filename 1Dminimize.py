@@ -1,4 +1,5 @@
 from scipy.optimize import minimize
+from 
 
 def minimize1D(x_0,Method,Bounds,arguments):
   list_theta = []
