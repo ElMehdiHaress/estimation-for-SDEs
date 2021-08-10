@@ -2,7 +2,7 @@ from scipy.special import gamma
 import numpy as np
 from math import *
 
-def functional_theta(theta, param, arg1, arg2):
+def functional_theta(x,theta, param, arg1, arg2):
     if param = 'H':
         diag = (arg2**2)*(theta*gamma(2*theta) )*arg1**(-2*theta)
         y = np.random.normal(0,sqrt(diag),10000)
