@@ -1,5 +1,5 @@
 from scipy.optimize import minimize
-from 
+from oneD_functional import functional_theta
 
 def minimize1D(x_0,Method,Bounds,arguments):
   list_theta = []
