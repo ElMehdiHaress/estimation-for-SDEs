@@ -1,3 +1,6 @@
+import numpy as np
+from math import *
+
 def ornstein_uhlenbeck(dt,n,drift,sigma,H):
     T = dt*n
     trials = 1
