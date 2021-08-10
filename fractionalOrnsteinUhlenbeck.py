@@ -1,6 +1,6 @@
 import numpy as np
 from math import *
-from fractionalBrownianMotion import fBm
+from fractionalBrownianmotion import fBm
 
 def ornstein_uhlenbeck(dt,n,drift,sigma,H):
     T = dt*n
