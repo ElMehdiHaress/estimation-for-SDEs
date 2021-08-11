@@ -5,7 +5,7 @@ from fractionalOrnsteinUhlenbeck import true_sample
 from numpy import linalg as LA
 from twoD_procedure import gradient
 
-#Here is an example where we show how to estimate two parametes out of three. We treat all the cases in one try, which sums up to three scenarios.
+#Here is an example where we show how to estimate two parameters out of three. We treat all the cases in one try, which sums up to three scenarios.
 
 
 #We first set the value of the true parameters, the timestep of the observations and the sample size
@@ -44,7 +44,8 @@ theta3 = np.array([theta0[1], theta0[2]])
 
 for i in tqdm(range(it)):
     grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)
-    while LA.norm(grad1) > 1: #We only keep 
+    while LA.norm(grad1) > 1: #This is just to make sure that we don't large values in the gradient, which will probably move the parameters out of their respective
+        #bounds. For instance, we don't want the hurst parameter to leave (0,1), as many integrals involved will not stay convergent.
         grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)  
     
     grad2 = gradient(x,[theta2[0],theta2[1],sigma],1,2)
