@@ -66,7 +66,7 @@ def partial_cov(xi,H,sigma):
 def random_va(p, trials):
     '''
     The distance between the sample and its invariant measure can be written as the expectation of L(X), where L may represent a loss function and X has a certain 
-    density function (what we cakk g_p in our work). Here, we generate many trials of a random variable that has g_p as density.
+    density function (what we call g_p in our work). Here, we generate many trials of a random variable that has g_p as density.
     args:
         p: specifies the desired density (int)
         trials: number of trials (int)
