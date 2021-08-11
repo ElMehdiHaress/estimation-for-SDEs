@@ -4,24 +4,12 @@ from scipy.special import gamma
 import scipy.integrate as integrate
 import numpy as np
 from math import *
-
-
 from scipy.stats import rv_continuous
-I = integrate.quad(lambda x: (x**2)*(1+x**2)**(-2), 0, np.inf)
-I = 1/I[0]
-class gp_gen(rv_continuous):
-    "gp distribution"
-    def _pdf(self, x):
-        return I*(x**2)*(1+x**2)*(-2)
-gp = gp_gen(name='gp')
 
-def random_va(trials):
-    r = gp.rvs(size=trials)
-    v = np.arccos(1-2*np.random.uniform(0,1,trials))
-    u = np.random.uniform(0,2*pi,trials)
-    return [r*np.cos(u)*np.sin(v), r*np.sin(u)*np.sin(v), r*np.cos(v)]
-  
-  
+#When estimating three parameters, we look at the process and its first and second increments, which gives us a new three dimensional process. In the Ornstein Uhlenbeck case,
+#the invariant distribution of this process is Gaussian. We first show how to compute its covariant matrix, and the derivatives of this matrix with respect to the
+#parameters. Then we show how to compute the gradient of the distance between this new sample and its invariant distribution.
+
   
   def cov_matrix(xi,H,sigma):
     I1 = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
@@ -79,8 +67,39 @@ def partial_cov(xi,H,sigma):
     return [cov_xi, cov_H, cov_sigma]
   
   
+
+
+
+I = integrate.quad(lambda x: (x**2)*(1+x**2)**(-2), 0, np.inf)
+I = 1/I[0]
+class gp_gen(rv_continuous):
+    "gp distribution"
+    def _pdf(self, x):
+        return I*(x**2)*(1+x**2)*(-2)
+gp = gp_gen(name='gp')
+
+def random_va(trials):
+    '''
+    The distance between the sample and its invariant measure can be written as the expectation of L(X), where L may represent a loss function and X has a certain 
+    density function (what we call g_p in our work). Here, we generate many trials of a random variable that has g_p as density.
+    args:
+        trials: number of trials (int)
+    '''
+    r = gp.rvs(size=trials)
+    v = np.arccos(1-2*np.random.uniform(0,1,trials))
+    u = np.random.uniform(0,2*pi,trials)
+    return [r*np.cos(u)*np.sin(v), r*np.sin(u)*np.sin(v), r*np.cos(v)]
   
-  def gradient(x,theta):
+  
+  
+ def gradient(x,theta):
+        '''
+    Computes a 'stochastic' gradient of the dsitance.
+    args:
+        x: sample (array)
+        theta: drift parameter, hurst parameter and diffusion parameter (array)
+    returns: 3-array    
+    '''
     Eta = random_va(100)
     g = []
     cov_partial = partial_cov(theta[0],theta[1],theta[2])
