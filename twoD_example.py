@@ -5,33 +5,46 @@ from fractionalOrnsteinUhlenbeck import true_sample
 from numpy import linalg as LA
 from twoD_procedure import gradient
 
+#Here is an example where we show how to estimate two parametes out of three. We treat all the cases in one try, which sums up to three scenarios.
+
+
+#We first set the value of the true parameters, the timestep of the observations and the sample size
 xi = 2
 sigma = 0.5
 H = 0.7
-nb = 10
 h = 0.1
 n = 10000
-x = true_sample(n,2,h,xi,sigma,H)
-
-theta0 = np.array([1,0.5,0.6])
-it = 1000
-loss1 = np.zeros(it)
-loss2 = np.zeros(it)
-loss3 = np.zeros(it)
-
-theta1 = np.array([theta0[0],theta0[2]])
-theta2 = np.array([theta0[0], theta0[1]])
-theta3 = np.array([theta0[1], theta0[2]])
-stepsize1 = np.array([0.5,0.01])
-stepsize2 = np.array([1,0.1])
-stepsize3 = 0.1
 true_theta1 = [xi, sigma]
 true_theta2 = [xi,H]
 true_theta3 = [H,sigma]
 
+#Then we generate a sample accordingly
+x = true_sample(n,2,h,xi,sigma,H)
+
+#We set the inital point from which we will start ou gradient descent
+theta0 = np.array([1,0.5,0.6])
+
+#The maximum number of iterations in our gradient descent
+it = 1000
+
+#We initalize the loss function
+loss1 = np.zeros(it)
+loss2 = np.zeros(it)
+loss3 = np.zeros(it)
+
+#Define the stepsize
+stepsize1 = np.array([0.5,0.01])
+stepsize2 = np.array([1,0.1])
+stepsize3 = 0.1
+
+#We start the gradient descent
+theta1 = np.array([theta0[0],theta0[2]])
+theta2 = np.array([theta0[0], theta0[1]])
+theta3 = np.array([theta0[1], theta0[2]])
+
 for i in tqdm(range(it)):
     grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)
-    while LA.norm(grad1) > 1:
+    while LA.norm(grad1) > 1: #We only keep 
         grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)  
     
     grad2 = gradient(x,[theta2[0],theta2[1],sigma],1,2)
@@ -52,6 +65,7 @@ for i in tqdm(range(it)):
     loss2[i] = LA.norm(theta2-true_theta2)**2
     loss3[i] = LA.norm(theta3-true_theta3)**2
 
+#Print the evolution of the loss    
 plt.plot(np.linspace(1,it,it),loss3, label= 'H and sigma')  
 plt.title('Evolution of the euclidean distance')
 plt.legend()
