@@ -5,7 +5,20 @@ import scipy.integrate as integrate
 import numpy as np
 from math import *
 
+#When estimating two parameters, we look at the process and its first increments, which gives us a new two dimensional process. In the Ornstein Uhlenbeck case,
+#the invariant distribution of this process is Gaussian. We first show how to compute its covariant matrix, and the derivatives of this matrix with respect to the
+#parameters. Then we show how to compute the gradient of the distance between this new sample and its invariant distribution.
+
+
 def cov_matrix(xi,H,sigma):
+    '''
+    Computes the covariant matrix
+    args:
+        xi: drift parameter (float)
+        H: hurst parameter (float)
+        sigma: diffusion parameter (float)
+    returns: cov (2x2 matrix)    
+    '''
     I = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I = I[0]
     non_diag = (sigma**2)*gamma(2*H+1)*sin(pi*H)*I/pi  - (sigma**2)*(H*gamma(2*H) )*xi**(-2*H)
@@ -15,6 +28,14 @@ def cov_matrix(xi,H,sigma):
     return cov
 
 def partial_cov(xi,H,sigma):
+    '''
+    Computes the partial derivatives of the covariant matrix
+    args:
+        xi: drift parameter (float)
+        H: hurst parameter (float)
+        sigma: diffusion parameter (float)
+    returns: [cov_xi, cov_H, cov_sigma]  (where cov_X is a 2x2 matrix, i.e the partial derivative with respect to X)    
+    '''
     I = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I = I[0]
     non_diag = 2*(sigma)*gamma(2*H+1)*sin(pi*H)*I/pi  - (2*sigma)*(H*gamma(2*H) )*xi**(-2*H)
@@ -43,6 +64,13 @@ def partial_cov(xi,H,sigma):
   
   
 def random_va(p, trials):
+    '''
+    The distance between the sample and its invariant measure can be written as the expectation of L(X), where L may represent a loss function and X has a certain 
+    density function (what we cakk g_p in our work). Here, we generate many trials of a random variable that has g_p as density.
+    args:
+        p: specifies the desired density (int)
+        trials: number of trials (int)
+    '''
     u = np.random.uniform(0,2*pi,trials)
     v = np.random.uniform(0,1,trials)
     v = (v**(1/(1-p)) - 1)**(1/2)
@@ -51,6 +79,15 @@ def random_va(p, trials):
   
   
 def gradient(x,theta,pb,p):
+    '''
+    Computes a 'stochastic' gradient of the dsitance.
+    args:
+        x: sample (array)
+        theta: drift parameter, hurst parameter and diffusion parameter (array)
+        pb : 1 if estimating xi and H, 2 if estimating xi and sigma, 3 if estimating H and sigma
+        p : specifies the desired density (int)
+    returns: 2-array    
+    '''
     Eta = random_va(p, 100)
     g = []
     cov_partial = partial_cov(theta[0],theta[1],theta[2])
