@@ -2,6 +2,9 @@ from scipy.special import gamma
 import numpy as np
 from math import *
 
+#We assume here and in the rest of the code an order for the parameters of the fractional Ornstein Uhlenebck model which is: drift parameter, hurst parameter and
+#finally the diffusion parameter
+
 def functional_theta(x,theta, param, arg1, arg2):
     '''
     Computes the Wassertein distance between the observed sample and the invariant measure
