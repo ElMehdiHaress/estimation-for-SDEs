@@ -3,6 +3,16 @@ import numpy as np
 from math import *
 
 def functional_theta(x,theta, param, arg1, arg2):
+    '''
+    Computes the Wassertein distance between the observed sample and the invariant measure
+    
+    args:
+        x:     sample (array)
+        theta: the parameter we want to estimate (float)
+        param: the parameter we want to estimate (string)
+        arg1:  first known parameter
+        arg2:  second known parameter
+    ''' 
     if param = 'H':
         diag = (arg2**2)*(theta*gamma(2*theta) )*arg1**(-2*theta)
         y = np.random.normal(0,sqrt(diag),10000)
