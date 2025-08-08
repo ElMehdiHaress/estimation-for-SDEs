@@ -1,0 +1,9 @@
+# Environnements virtuels
+.venv/
+# caches Python
+__pycache__/
+*.pyc
+# Jupyter checkpoint
+.ipynb_checkpoints/
+# dist-info & egg-info
+*.egg-info/
