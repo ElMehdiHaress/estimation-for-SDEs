@@ -1,5 +1,4 @@
 from scipy.special import psi
-from tqdm import tqdm
 from scipy.special import gamma
 import scipy.integrate as integrate
 import numpy as np
@@ -10,8 +9,9 @@ from scipy.stats import rv_continuous
 #the invariant distribution of this process is Gaussian. We first show how to compute its covariant matrix, and the derivatives of this matrix with respect to the
 #parameters. Then we show how to compute the gradient of the distance between this new sample and its invariant distribution.
 
+
   
-  def cov_matrix(xi,H,sigma):
+def cov_matrix(h,xi,H,sigma):
     I1 = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I1 = I1[0]
     I2 = integrate.quad(lambda x: cos(2*h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
@@ -25,7 +25,7 @@ from scipy.stats import rv_continuous
     return cov
 
 
-def partial_cov(xi,H,sigma):
+def partial_cov(h,xi,H,sigma):
     I1 = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I1 = I1[0]
     I2 = integrate.quad(lambda x: cos(2*h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
@@ -67,9 +67,6 @@ def partial_cov(xi,H,sigma):
     return [cov_xi, cov_H, cov_sigma]
   
   
-
-
-
 I = integrate.quad(lambda x: (x**2)*(1+x**2)**(-2), 0, np.inf)
 I = 1/I[0]
 class gp_gen(rv_continuous):
@@ -92,8 +89,8 @@ def random_va(trials):
   
   
   
- def gradient(x,theta):
-        '''
+def gradient(h,x,theta):
+    '''
     Computes a 'stochastic' gradient of the dsitance.
     args:
         x: sample (array)
@@ -102,9 +99,9 @@ def random_va(trials):
     '''
     Eta = random_va(100)
     g = []
-    cov_partial = partial_cov(theta[0],theta[1],theta[2])
+    cov_partial = partial_cov(h,theta[0],theta[1],theta[2])
     cov_partial = np.array(cov_partial)    
-    matrix_cov = np.array(cov_matrix(theta[0],theta[1],theta[2]))
+    matrix_cov = np.array(cov_matrix(h,theta[0],theta[1],theta[2]))
     
     for i in range(100):
         eta = [Eta[0][i],Eta[1][i],Eta[2][i]]
@@ -116,3 +113,6 @@ def random_va(trials):
         g += [ [-2*(av - np.exp(r))*r0 , -2*(av - np.exp(r))*r1 , -2*(av - np.exp(r))*r2]  ]
     g = np.array(g)    
     return np.array([np.mean(g[:,0]),np.mean(g[:,1]), np.mean(g[:,2])])  
+
+
+__all__=["cov_matrix","partial_cov","random_va","gradient"]
