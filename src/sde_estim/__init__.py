@@ -26,7 +26,7 @@ for _name, _typ in _fallback.items():
 # --------------------------------------------------------------------
 try:
     from . import distance                 # noqa: F401
-except Exception as _e:                    # ImportError ou ValueError binaire
+except Exception:                    # ImportError ou ValueError binaire
     distance = None                        # le reste du paquet reste utilisable
 # NB : on n’ajoute 'distance' à __all__ que s’il est bien importé
 __all__ = ["simulation"]
