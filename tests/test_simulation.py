@@ -8,4 +8,3 @@ def test_davies_harte_shape():
     path = davies_harte(T, N, 0.6)
     assert path.shape == (N + 1,)
     assert np.isfinite(path).all()
-
