@@ -1,4 +1,11 @@
-# Estimation-for-SDEs
+# Estimation for SDEs
+
+![CI](https://github.com/ElMehdiHaress/estimation-for-SDEs/actions/workflows/ci.yml/badge.svg)
+
+<presentation, quick-start, etc.>
+
+
+
 This is a guide to estimating the parameters (drift, hurst and diffusion parameter) in a fractional additive stochastic differential equation. 
 
 When estimating one parameter (assuming the other two are known), and given a discrete path of the solution as observations, the idea is to minimize the Wassertein distance between the distribution of the sample and the invariant measure of the process (or any distance upper bounded by the Wassertein). 
