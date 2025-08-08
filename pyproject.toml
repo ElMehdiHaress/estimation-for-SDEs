@@ -16,6 +16,17 @@ dependencies = [
   "pyemd",
 ]
 
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+  "flake8"
+]
+
+
+
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
