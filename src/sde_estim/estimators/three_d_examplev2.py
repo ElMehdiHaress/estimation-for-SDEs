@@ -1,8 +1,9 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from fractionalOrnsteinUhkenbeck import true_sample
-from threeD_procedure import gradient
+from sde_estim.simulation import true_sample
+from sde_estim.estimators.three_d_procedure import gradient
+from sde_estim.estimators.three_d_procedurev2 import gradient as gradientv2
 from numpy import linalg as LA
 
 #As we explained before, when estimating thee parameters we consider the consider the O-U process X, its increments X_{.+h}-X_. and X_{.+2h}-X_. 
@@ -40,16 +41,16 @@ thetav2 = np.array(theta0)
 stepsize1 = np.array([0.05,0.001,0.001])
 stepsize2 = np.array([0.005,0.0001,0.0001])
 
-for i in tqdm(range(it)):
-    gradv1 = gradient(x,[thetav1[0],thetav1[1], thetav1[2]])
+for i in range(it):
+    gradv1 = gradient(h,x,[thetav1[0],thetav1[1], thetav1[2]])
     while LA.norm(gradv1) > 100:  #This is just to make sure that we don't large values in the gradient, which will probably move the parameters out of their respective
         #bounds. For instance, we don't want the hurst parameter to leave (0,1), as many integrals involved will not stay convergent.
-        gradv1 = gradient(x,[thetav1[0],thetav1[1], thetav1[2]])
+        gradv1 = gradient(h,x,[thetav1[0],thetav1[1], thetav1[2]])
     print(gradv1)
     
-    gradv2 = gradientv2(x2,[thetav2[0],thetav2[1], thetav2[2]])
+    gradv2 = gradientv2(h,x2,[thetav2[0],thetav2[1], thetav2[2]])
     while LA.norm(gradv2) > 400:
-        gradv2 = gradient(x2,[thetav2[0],thetav2[1], thetav2[2]])
+        gradv2 = gradientv2(h,x2,[thetav2[0],thetav2[1], thetav2[2]])
     print(gradv2)
         
     thetav1 = thetav1 - gradv1*stepsize1*((1+i)**(-1/2))

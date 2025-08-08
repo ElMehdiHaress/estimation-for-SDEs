@@ -1,16 +1,16 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from fractionalOrnsteinUhkenbeck import true_sample
-from threeD_procedure import gradient
+from sde_estim.simulation import true_sample
 from numpy import linalg as LA
+from sde_estim.estimators.three_d_procedure import random_va
 
 #As we explained before, when estimating thee parameters we consider the consider the O-U process X, its increments X_{.+h}-X_. and X_{.+2h}-X_. 
 #However, some may argue that the last increment should better be replaced by X_{.+h}-2X_. +X_{.-h}, which would correspond to the second order 'derivative'. 
 #If we consider the second choice, then naturally the covariant matrix and its partial derivatives we computed before will change. The same goes for the gradient.
 
 
-def cov_matrixv2(xi,H,sigma):
+def cov_matrixv2(h,xi,H,sigma):
     I1 = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I1 = I1[0]
     I2 = integrate.quad(lambda x: cos(2*h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
@@ -29,7 +29,7 @@ def cov_matrixv2(xi,H,sigma):
     return cov
 
 
-def partial_covv2(xi,H,sigma):
+def partial_covv2(h,xi,H,sigma):
     I1 = integrate.quad(lambda x: cos(h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
     I1 = I1[0]
     I2 = integrate.quad(lambda x: cos(2*h*x)*(x**(1-2*H))/(xi**2 + x**2), 0, 1000)
@@ -88,10 +88,8 @@ def partial_covv2(xi,H,sigma):
   
   
   
-  from threeD_procedure import random_va
-  
-  def gradient(x,theta):
-      '''
+def gradient(h,x,theta):
+    '''
     Computes a 'stochastic' gradient of the dsitance.
     args:
         x: sample (array)
@@ -100,9 +98,9 @@ def partial_covv2(xi,H,sigma):
     '''
     Eta = random_va(100)
     g = []
-    cov_partial = partial_covv2(theta[0],theta[1],theta[2])
+    cov_partial = partial_covv2(h,theta[0],theta[1],theta[2])
     cov_partial = np.array(cov_partial)    
-    matrix_cov = np.array(cov_matrixv2(theta[0],theta[1],theta[2]))
+    matrix_cov = np.array(cov_matrixv2(h,theta[0],theta[1],theta[2]))
     
     for i in range(100):
         eta = [Eta[0][i],Eta[1][i],Eta[2][i]]
@@ -115,3 +113,4 @@ def partial_covv2(xi,H,sigma):
     g = np.array(g)    
     return np.array([np.mean(g[:,0]),np.mean(g[:,1]), np.mean(g[:,2])])  
 
+__all__= ["gradient"]

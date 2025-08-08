@@ -1,5 +1,4 @@
 from scipy.special import psi
-from tqdm import tqdm
 from scipy.special import gamma
 import scipy.integrate as integrate
 import numpy as np
@@ -10,7 +9,7 @@ from math import *
 #parameters. Then we show how to compute the gradient of the distance between this new sample and its invariant distribution.
 
 
-def cov_matrix(xi,H,sigma):
+def cov_matrix(h,xi,H,sigma):
     '''
     Computes the covariant matrix
     args:
@@ -27,7 +26,7 @@ def cov_matrix(xi,H,sigma):
     cov =  [[diag_1, non_diag],[non_diag,diag_2]]
     return cov
 
-def partial_cov(xi,H,sigma):
+def partial_cov(h,xi,H,sigma):
     '''
     Computes the partial derivatives of the covariant matrix
     args:
@@ -78,7 +77,7 @@ def random_va(p, trials):
   
   
   
-def gradient(x,theta,pb,p):
+def gradient(h,x,theta,pb,p):
     '''
     Computes a 'stochastic' gradient of the dsitance.
     args:
@@ -90,7 +89,7 @@ def gradient(x,theta,pb,p):
     '''
     Eta = random_va(p, 100)
     g = []
-    cov_partial = partial_cov(theta[0],theta[1],theta[2])
+    cov_partial = partial_cov(h,theta[0],theta[1],theta[2])
     if pb == 1:
         cov_partial = [cov_partial[0],cov_partial[1]]
     if pb == 2:
@@ -99,7 +98,7 @@ def gradient(x,theta,pb,p):
         cov_partial = [cov_partial[1],cov_partial[2]]
     cov_partial = np.array(cov_partial)    
     
-    matrix_cov = np.array(cov_matrix(theta[0],theta[1],theta[2]))
+    matrix_cov = np.array(cov_matrix(h,theta[0],theta[1],theta[2]))
     
     for i in range(100):
         eta = [Eta[0][i],Eta[1][i]]
@@ -110,3 +109,5 @@ def gradient(x,theta,pb,p):
         g += [ [-2*(av - np.exp(r))*r0 , -2*(av - np.exp(r))*r1]  ]
     g = np.array(g)    
     return np.array([np.mean(g[:,0]),np.mean(g[:,1])]) 
+
+__all__=["cov_matrix","partial_cov","random_va","gradient"]

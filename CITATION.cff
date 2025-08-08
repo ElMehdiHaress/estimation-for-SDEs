@@ -1,0 +1,16 @@
+# -------------  CITATION.cff  -----------------
+cff-version: 1.2.0
+title: "Estimators for Additive Fractional SDEs"
+message: "If you use this software, please cite it as below."
+version: "0.1.0"
+type: software
+authors:
+  - family-names: Haress
+    given-names: El Mehdi
+    # orcid: "0000-0002-XXXX-XXXX"   # (dé-commente si tu as un ORCID)
+date-released: 2025-08-08
+repository-code: "https://github.com/ElMehdiHaress/estimation-for-SDEs"
+license: MIT
+# doi: "10.5281/zenodo.1234567"      # (ajoute si tu crées un DOI plus tard)
+# --------------------------------------------
+

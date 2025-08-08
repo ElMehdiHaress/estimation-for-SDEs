@@ -1,5 +1,5 @@
 from scipy.optimize import minimize
-from oneD_functional import functional_theta
+from sde_estim.estimators.one_d_functional import functional_theta
 
 def minimize1D(x_0,Method,Bounds,arguments):
   '''

@@ -1,9 +1,9 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from fractionalOrnsteinUhlenbeck import true_sample
+from sde_estim.simulation  import true_sample
 from numpy import linalg as LA
-from twoD_procedure import gradient
+from sde_estim.estimators.two_d_procedure import gradient
 
 #Here is an example where we show how to estimate two parameters out of three. We treat all the cases in one try, which sums up to three scenarios.
 
@@ -42,20 +42,20 @@ theta1 = np.array([theta0[0],theta0[2]])
 theta2 = np.array([theta0[0], theta0[1]])
 theta3 = np.array([theta0[1], theta0[2]])
 
-for i in tqdm(range(it)):
-    grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)
+for i in range(it):
+    grad1 = gradient(h,x,[theta1[0],H,theta1[1]],2,2)
     while LA.norm(grad1) > 1: #This is just to make sure that we don't large values in the gradient, which will probably move the parameters out of their respective
         #bounds. For instance, we don't want the hurst parameter to leave (0,1), as many integrals involved will not stay convergent.
-        grad1 = gradient(x,[theta1[0],H,theta1[1]],2,2)  
+        grad1 = gradient(h,x,[theta1[0],H,theta1[1]],2,2)  
     
-    grad2 = gradient(x,[theta2[0],theta2[1],sigma],1,2)
+    grad2 = gradient(h,x,[theta2[0],theta2[1],sigma],1,2)
     while LA.norm(grad2) > 1:
-        grad2 = gradient(x,[theta2[0],theta2[1],sigma],1,2)   
+        grad2 = gradient(h,x,[theta2[0],theta2[1],sigma],1,2)   
         
         
-    grad3 = gradient(x,[xi,theta3[0],theta3[1]],3,2)
+    grad3 = gradient(h,x,[xi,theta3[0],theta3[1]],3,2)
     while LA.norm(grad3) > 1:
-        grad3 = gradient(x,[xi,theta3[0],theta3[1]],3,2)       
+        grad3 = gradient(h,x,[xi,theta3[0],theta3[1]],3,2)       
     print(grad1)    
         
     theta1 = theta1 - grad1*stepsize1*((1+i)**(-1/2))
