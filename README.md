@@ -28,6 +28,8 @@ print(f"W₂ distance = {d:.5f}")
 
 src/sde_estim/            core package
 
+└─ simulation
+
 └─ estimators/            one_d_*, two_d_*, three_d_*
 
 examples/quick_start.ipynb demo notebook
