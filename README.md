@@ -27,8 +27,11 @@ print(f"W₂ distance = {d:.5f}")
 ## 🗺  Repository layout
 
 src/sde_estim/            core package
+
 └─ estimators/            one_d_*, two_d_*, three_d_*
+
 examples/quick_start.ipynb demo notebook
+
 tests/                    pytest + coverage
 
 
