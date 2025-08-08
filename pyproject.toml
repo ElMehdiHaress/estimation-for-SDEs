@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sde-estim"
+version = "0.1.0"
+description = "Estimators for parameters of additive fractional SDEs"
+authors = [{ name = "El Mehdi Haress", email = "you@example.com" }]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
