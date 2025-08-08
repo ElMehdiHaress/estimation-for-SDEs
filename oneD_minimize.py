@@ -9,7 +9,7 @@ def minimize1D(x_0,Method,Bounds,arguments):
       x_0: inital point to start the minimization procedure (float)
       Method: Algorithm used for the minimization procedure (string)
       Bounds: Bounds on the parameter we want to estimate
-      arguments: arguments for the function 'functional_theta' which contain the sample and the other known parameters
+      arguments: arguments for the function 'functional_theta' which contain the sample and the other known parameters of functional_theta
   '''
   list_theta = []
   for i in tqdm(range(100)):
