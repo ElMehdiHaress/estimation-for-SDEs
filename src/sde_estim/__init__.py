@@ -2,26 +2,29 @@
 sde_estim: package for parameter estimation in additive fractional SDEs
 """
 
+# Rendre les sous-modules accessibles directement
+from . import simulation
+from . import distance
+
 # --------------------------------------------------------------------
-# Compatibility shim for NumPy ≥ 1.24
-# (aliases like np.complex, np.int, np.bool were removed)
+# Compatibility shim for NumPy ≥ 2.0 (aliases removed)
 # --------------------------------------------------------------------
 import numpy as _np
 
-_removed_aliases = {
-    "complex": _np.complex128,
-    "bool": _np.bool_,
-    "int": _np.int_,
-    "float": _np.float_,
+# map alias name  ->   fallback object that EXISTS
+_fallback = {
+    "complex": _np.complex128,   # OK depuis NumPy 1.x et 2.x
+    "float":   _np.float64,      # existe toujours
+    "int":     _np.int64,        # existe toujours
+    "bool":    bool,             # builtin bool suffit
 }
-for _name, _typ in _removed_aliases.items():
+
+for _name, _typ in _fallback.items():
     if not hasattr(_np, _name):
         setattr(_np, _name, _typ)
 # --------------------------------------------------------------------
 
-# Rendre les sous-modules accessibles directement
-from . import simulation
-from . import distance
+
 
 __all__ = ["simulation", "distance"]
 
