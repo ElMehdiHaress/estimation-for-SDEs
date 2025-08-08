@@ -9,4 +9,4 @@ In simple cases, like the Ornstein-Uhlenbeck model, the invariant measure is kno
 
 The main difficulty about this approach is finding a 'good' distance to minimize. As we know, the Wassertein is very hard to approximate in higher dimensions, and therefore, we are able to use it only when we want to estimate one real parameter. Otherwise, we use another distance (which incorporates the characteristic functions) that can be written as the expectation of a loss function. This enables us to do perform a stochastic gradient descent. 
 
-For more details about the theoretical construction and convergence of the estimators, we refer to our work (). 
+For more details about the theoretical construction and convergence of the estimators, please refer to my paper with Alexandre Richard: Estimation of several parameters in discretely-observed Stochastic Differential Equations with additive fractional noise. 
