@@ -1,8 +1,8 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from fractionalOrnsteinUhkenbeck import true_sample
-from threeD_procedure import gradient
+from sde_estim.simulation import true_sample
+from sde_estim.estimators.three_d_procedure import gradient
 from numpy import linalg as LA
 
 #Here is an example where we show how to estimate the three parameters in the fractional Ornstein-Uhlenbeck model.
@@ -36,11 +36,11 @@ stepsize1 = np.array([0.05,0.001,0.001])
 #We start the gradient descent
 theta = np.array(theta0)
 
-for i in tqdm(range(it)):
-    grad = gradient(x,[theta[0],theta[1], theta[2]])
+for i in range(it):
+    grad = gradient(h,x,[theta[0],theta[1], theta[2]])
     while LA.norm(grad) > 100: #This is just to make sure that we don't large values in the gradient, which will probably move the parameters out of their respective
         #bounds. For instance, we don't want the hurst parameter to leave (0,1), as many integrals involved will not stay convergent.
-        grad = gradient(x,[theta[0],theta[1], theta[2]])
+        grad = gradient(h,x,[theta[0],theta[1], theta[2]])
     print(grad)
         
     theta = theta - grad*stepsize1*((1+i)**(-1/2))
