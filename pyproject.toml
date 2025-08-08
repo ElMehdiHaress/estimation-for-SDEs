@@ -13,6 +13,7 @@ dependencies = [
   "numpy",
   "scipy",
   "matplotlib",
+  "pyemd",
 ]
 
 [tool.setuptools.packages.find]
