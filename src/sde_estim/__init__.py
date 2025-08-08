@@ -2,10 +2,6 @@
 sde_estim: package for parameter estimation in additive fractional SDEs
 """
 
-# Rendre les sous-modules accessibles directement
-from . import simulation
-from . import distance
-
 # --------------------------------------------------------------------
 # Compatibility shim for NumPy ≥ 2.0 (aliases removed)
 # --------------------------------------------------------------------
@@ -25,6 +21,16 @@ for _name, _typ in _fallback.items():
 # --------------------------------------------------------------------
 
 
-
-__all__ = ["simulation", "distance"]
+# --------------------------------------------------------------------
+# Import facultatif du sous-module distance (dépend de pyemd)
+# --------------------------------------------------------------------
+try:
+    from . import distance                 # noqa: F401
+except Exception as _e:                    # ImportError ou ValueError binaire
+    distance = None                        # le reste du paquet reste utilisable
+# NB : on n’ajoute 'distance' à __all__ que s’il est bien importé
+__all__ = ["simulation"]
+if distance is not None:
+    __all__.append("distance")
+# --------------------------------------------------------------------
 
